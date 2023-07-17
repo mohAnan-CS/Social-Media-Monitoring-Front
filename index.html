@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+    <style>
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .topic-widget {
+            height: 350px;
+            padding: 10px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .topic-logo {
+            margin-right: 10px;
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        ul {
+            padding-left: 20px;
+            list-style-type: none;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+            padding-left: 0;
+            position: relative;
+        }
+
+        ul li:before {
+            content: "▹";
+            color: #6c757d;
+            position: absolute;
+            left: -15px;
+        }
+
+        #topic_class {
+            margin-bottom: 20px;
+        }
+
+        #myChart {
+            max-height: 350px;
+        }
+
+        .flag-icon {
+            margin-right: 5px;
+        }
+
+        .region .card-body {
+            overflow-y: scroll;
+        }
+
+        .region ul {
+            padding-right: 15px;
+        }
+
+        .region li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .region .flag-icon {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+            <i class="fab fa-twitter"></i>
+            TweetScope
+        </a>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 col-lg-3">
+                <div class="card chart topic-widget" id="topic_class">
+                    <div class="card-body">
+                        <h5 class="card-title">Topic Classification</h5>
+                        <canvas id="pieChart" style="padding: 15px;"></canvas>
+                        <script>
+                            var ctxPie = document.getElementById('pieChart').getContext('2d');
+                            var topics = ['Science', 'Sport', 'Art', 'Technology', 'Economy', 'Health'];
+                            var dataPoints = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100));
+                            var pieChart = new Chart(ctxPie, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: topics,
+                                    datasets: [{
+                                        data: dataPoints,
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.7)',
+                                            'rgba(54, 162, 235, 0.7)',
+                                            'rgba(255, 206, 86, 0.7)',
+                                            'rgba(75, 192, 192, 0.7)',
+                                            'rgba(153, 102, 255, 0.7)',
+                                            'rgba(255, 159, 64, 0.7)'
+                                        ],
+                                        borderColor: '#ffffff',
+                                        borderWidth: 3
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+                <div class="card list widget" id="topic_offensive" style="height: 270px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Top Offensive</h5>
+                        <ul>
+                            <li>
+                                @moh23: "Check out this amazing post! 🔥🔥 #awesome #content" <b>Hate Speech</b>
+                            </li>
+                            <li>
+                                @jarar_sd: "Wow, this is mind-blowing! 😮 #inspiring #mustread" <b>Pornography</b>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6">
+                <div class="card chart widget" style="height: 640px;">
+                    <div class="card-body" style="height: 550px;">
+                        <h5 class="card-title">Line Chart Widget</h5>
+                        <canvas id="myChart" style="height: 540px;"></canvas>
+                        <script>
+                            var ctx = document.getElementById('myChart').getContext('2d');
+                            var myChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                                    datasets: [{
+                                        label: 'Hate Speech',
+                                        data: [12000, 19000, 3000, 5000, 2000, 3000, 10000, 15000, 7000, 6000, 9000, 12000],
+                                        borderColor: 'rgba(255, 99, 132, 1)',
+                                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                        fill: true
+                                    }, {
+                                        label: 'Pornography',
+                                        data: [7000, 11000, 5000, 8000, 2000, 1000, 4600, 6000, 40300, 6000, 9000, 10000],
+                                        borderColor: 'rgba(54, 162, 235, 1)',
+                                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                        fill: true
+                                    }, {
+                                        label: 'Abusive',
+                                        data: [3000, 10000, 5000, 7000, 4000, 6000, 3000, 7000, 8000, 9000, 10000, 12000],
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        fill: true
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            max: 50000
+                                        }
+                                    },
+                                    responsive: true,
+                                    maintainAspectRatio: false
+                                }
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-3">
+                <div class="card list widget" style="margin-bottom: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Top Topics</h5>
+                        <ul>
+                            <li>
+                                <i class="fas fa-atom topic-logo"></i>
+                                Science: 34,356,677 tweets
+                            </li>
+                            <li>
+                                <i class="fas fa-laptop-code topic-logo"></i>
+                                Technology: 54,643 tweets
+                            </li>
+                            <li>
+                                <i class="fas fa-globe-americas topic-logo"></i>
+                                Politics: 4,465 tweets
+                            </li>
+                            <li>
+                                <i class="fas fa-heartbeat topic-logo"></i>
+                                Health: 324 tweets
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card list widget region" style="height: 395px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Top Region</h5>
+                        <ul>
+                            <li>
+                                <span class="flag-icon flag-icon-us"></span>
+                                United States: 4,353 users
+                            </li>
+                            <li>
+                                <span class="flag-icon flag-icon-jo"></span>
+                                Jordan: 34,323 users
+                            </li>
+                            <li>
+                                <span class="flag-icon flag-icon-ma"></span>
+                                Morocco: 3,500 users
+                            </li>
+                            <li>
+                                <span class="flag-icon flag-icon-eg"></span>
+                                Egypt: 2,344 users
+                            </li>
+                            <li>
+                                <span class="flag-icon flag-icon-gb"></span>
+                                United Kingdom: 5,678 users
+                            </li>
+                            <li>
+                                <span class="flag-icon flag-icon-fr"></span>
+                                France: 4,512 users
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
